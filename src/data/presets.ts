@@ -2,6 +2,16 @@ import { VideoPreset, ChapterMark } from '../types/player';
 
 export const VIDEO_PRESETS: VideoPreset[] = [
   {
+    id: 'trending-cartoon',
+    name: 'Trending Cartoon Animation Reel (20s)',
+    category: 'bright',
+    description: 'Vibrant 20s trending cartoon animation reel featuring Sunny Candy Synth City (Daylight), Rainbow Rocket Flight, Midnight Neon Forest (Dark Shadows), and Boombox Dance Party. Ready to download and upload to your Mux account!',
+    src: '/videos/trending-cartoon-reel.mp4',
+    type: 'video/mp4',
+    poster: '/videos/trending-cartoon-poster.jpg',
+    fps: 30,
+  },
+  {
     id: 'mux-master',
     name: 'Mux HLS Master (Official)',
     category: 'mux',
@@ -13,18 +23,18 @@ export const VIDEO_PRESETS: VideoPreset[] = [
     fps: 30,
   },
   {
-    id: 'bright-audit',
-    name: 'High-Key Bright Reel (Snow & Light)',
+    id: 'curated-bright-dark',
+    name: 'Curated Bright & Dark Benchmark Reel (24s)',
     category: 'bright',
-    description: 'Blinding white snowscapes and high-luminance footage to audit WCAG AA/AAA text legibility.',
-    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    description: '24-second continuous benchmark alternating 8s High-Key Daylight (96% Y), 8s Low-Key Obsidian (4% Y), and 8s Dynamic SMPTE Chroma with stereo audio.',
+    src: '/videos/curated-bright-dark-reel.mp4',
     type: 'video/mp4',
-    poster: 'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=1280&q=80',
+    poster: '/videos/curated-bright-dark-poster.jpg',
     fps: 30,
   },
   {
     id: 'dark-audit',
-    name: 'Low-Key Dark Reel (Deep Shadows)',
+    name: 'Low-Key Dark Sci-Fi Reel',
     category: 'dark',
     description: 'High-contrast sci-fi night footage to audit optical compensation and shadow separation.',
     src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
@@ -34,7 +44,7 @@ export const VIDEO_PRESETS: VideoPreset[] = [
   },
   {
     id: 'mux-alt',
-    name: 'Mux Motion Graphics (60fps)',
+    name: 'Mux High-Frequency Motion (60fps)',
     category: 'mux',
     description: 'Fast-paced Mux stream ideal for evaluating rotary jog wheel and frame scrubbing precision.',
     src: 'https://stream.mux.com/249oQ39F9p7i6QWdGzU1vW3c34V9jH01X2.m3u8',
@@ -46,11 +56,10 @@ export const VIDEO_PRESETS: VideoPreset[] = [
 ];
 
 export const CHAPTER_MARKS: ChapterMark[] = [
-  { time: 0, label: '01. Deck Initialization' },
-  { time: 30, label: '02. Analog Calibration' },
-  { time: 90, label: '03. Main Sequence' },
-  { time: 180, label: '04. Peak Resonance' },
-  { time: 300, label: '05. Outro & Decay' },
+  { time: 0, label: '01. Sunny Candy Synth City (Daylight)' },
+  { time: 5, label: '02. Rainbow Rocket Action Flight' },
+  { time: 10, label: '03. Midnight Neon Forest (Dark Shadows)' },
+  { time: 15, label: '04. Boombox Dance Celebration' },
 ];
 
 export function formatTimecode(seconds: number, fps: number = 30): string {
