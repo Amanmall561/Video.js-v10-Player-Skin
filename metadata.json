@@ -1,0 +1,6 @@
+{
+  "name": "Synth-10 Deck — Custom Video.js v10 Skin",
+  "description": "Tactile retro-futuristic custom skin for the Video.js v10 player with mechanical dials, rotary jog-wheel frame precision, analog VU meters, and Mux HLS streaming.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
