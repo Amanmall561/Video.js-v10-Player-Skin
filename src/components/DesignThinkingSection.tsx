@@ -16,7 +16,7 @@ export const DesignThinkingSection: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-[#0a0d13] rounded-2xl border border-[#1e2533] p-6 shadow-xl mt-6">
+    <div className="hidden w-full bg-[#0a0d13] rounded-2xl border border-[#1e2533] p-6 shadow-xl mt-6">
       
       {/* Title & Badge */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/5 pb-4 mb-5">

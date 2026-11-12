@@ -2,6 +2,16 @@ import { VideoPreset, ChapterMark } from '../types/player';
 
 export const VIDEO_PRESETS: VideoPreset[] = [
   {
+    id: 'project-screen-demo',
+    name: 'Project Screen-Recording Demo (20s Full Walkthrough)',
+    category: 'bright',
+    description: 'Complete 1080p screen-recording walkthrough of the Synth-10 Tactile Deck project showing Video.js v10 playback, timeline scrubbing, rotary jog wheel, and stereo VU meters working in real time.',
+    src: '/videos/synth10-project-demo.mp4',
+    type: 'video/mp4',
+    poster: '/videos/synth10-project-demo-poster.jpg',
+    fps: 30,
+  },
+  {
     id: 'trending-cartoon',
     name: 'Trending Cartoon Animation Reel (20s)',
     category: 'bright',
@@ -42,24 +52,13 @@ export const VIDEO_PRESETS: VideoPreset[] = [
     poster: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1280&q=80',
     fps: 24,
   },
-  {
-    id: 'mux-alt',
-    name: 'Mux High-Frequency Motion (60fps)',
-    category: 'mux',
-    description: 'Fast-paced Mux stream ideal for evaluating rotary jog wheel and frame scrubbing precision.',
-    src: 'https://stream.mux.com/249oQ39F9p7i6QWdGzU1vW3c34V9jH01X2.m3u8',
-    type: 'application/x-mpegURL',
-    poster: 'https://image.mux.com/249oQ39F9p7i6QWdGzU1vW3c34V9jH01X2/thumbnail.jpg?width=1280',
-    muxPlaybackId: '249oQ39F9p7i6QWdGzU1vW3c34V9jH01X2',
-    fps: 60,
-  },
 ];
 
 export const CHAPTER_MARKS: ChapterMark[] = [
-  { time: 0, label: '01. Sunny Candy Synth City (Daylight)' },
-  { time: 5, label: '02. Rainbow Rocket Action Flight' },
-  { time: 10, label: '03. Midnight Neon Forest (Dark Shadows)' },
-  { time: 15, label: '04. Boombox Dance Celebration' },
+  { time: 0, label: '01. Video.js v10 & Sunny Candy City (0-5s)' },
+  { time: 5, label: '02. Tactile Scrubber & Rainbow Flight (5-10s)' },
+  { time: 10, label: '03. Precision Jog Wheel & Neon Forest (10-15s)' },
+  { time: 15, label: '04. Calibrated VU Meters & Party Dance (15-20s)' },
 ];
 
 export function formatTimecode(seconds: number, fps: number = 30): string {

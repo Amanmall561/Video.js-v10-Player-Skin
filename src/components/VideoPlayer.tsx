@@ -1,9 +1,9 @@
-import React, { useRef, useEffect, useCallback, useMemo } from 'react';
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import { VideoPlayer as VjsVideoPlayer, VideoSkin as VjsVideoSkin, Video as VjsVideo } from '@videojs/react/video';
 import { MuxVideo } from '@videojs/react/media/mux-video/hls-js';
 import { VideoPreset, PlayerState, VideoJsPlayer } from '../types/player';
 import { formatTimecode } from '../data/presets';
-import { Play, Pause, Loader2, Sparkles, Volume2, VolumeX } from 'lucide-react';
+import { Play, Pause, Loader2, Sparkles, AlertCircle, RefreshCw } from 'lucide-react';
 
 interface VideoPlayerProps {
   preset: VideoPreset;
@@ -22,6 +22,12 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [mediaError, setMediaError] = useState<string | null>(null);
+
+  // Reset error when preset changes
+  useEffect(() => {
+    setMediaError(null);
+  }, [preset.src]);
 
   // Build the Video.js v10 controller implementation
   const controller = useMemo<VideoJsPlayer>(() => {
@@ -131,6 +137,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const handleLoadedMetadata = () => {
     const el = videoRef.current;
     if (!el) return;
+    setMediaError(null);
     const dur = el.duration || 0;
     onStateChange((prev) => ({
       ...prev,
@@ -143,6 +150,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   };
 
   const handlePlay = () => {
+    setMediaError(null);
     onStateChange((prev) => ({ ...prev, isPlaying: true, isWaiting: false }));
   };
 
@@ -174,7 +182,24 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   };
 
   const handlePlaying = () => {
+    setMediaError(null);
     onStateChange((prev) => ({ ...prev, isWaiting: false, isPlaying: true }));
+  };
+
+  const handleMediaError = () => {
+    const el = videoRef.current;
+    const err = el?.error;
+    console.error('Video error encountered:', err);
+    setMediaError(err?.message || 'Media source decoding error. Retrying format...');
+  };
+
+  const handleRetry = () => {
+    setMediaError(null);
+    const el = videoRef.current;
+    if (el) {
+      el.load();
+      el.play().catch(() => {});
+    }
   };
 
   // Fullscreen change listener
@@ -199,6 +224,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     }
   }, []);
 
+  const isMux = preset.category === 'mux' || !!preset.muxPlaybackId;
+
   return (
     <div
       ref={containerRef}
@@ -208,7 +235,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
       <VjsVideoPlayer>
         {showNativeControls ? (
           <VjsVideoSkin className="w-full h-full">
-            {preset.category === 'mux' || preset.muxPlaybackId ? (
+            {isMux ? (
               <MuxVideo
                 ref={videoRef}
                 src={preset.src}
@@ -224,6 +251,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 onRateChange={handleRateChange}
                 onWaiting={handleWaiting}
                 onPlaying={handlePlaying}
+                onError={handleMediaError}
               />
             ) : (
               <VjsVideo
@@ -231,7 +259,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 src={preset.src}
                 poster={preset.poster}
                 playsInline
-                crossOrigin="anonymous"
                 className="w-full h-full object-cover"
                 onTimeUpdate={handleTimeUpdate}
                 onLoadedMetadata={handleLoadedMetadata}
@@ -241,12 +268,13 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 onRateChange={handleRateChange}
                 onWaiting={handleWaiting}
                 onPlaying={handlePlaying}
+                onError={handleMediaError}
               />
             )}
           </VjsVideoSkin>
         ) : (
           <div className="w-full h-full relative">
-            {preset.category === 'mux' || preset.muxPlaybackId ? (
+            {isMux ? (
               <MuxVideo
                 ref={videoRef}
                 src={preset.src}
@@ -262,6 +290,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 onRateChange={handleRateChange}
                 onWaiting={handleWaiting}
                 onPlaying={handlePlaying}
+                onError={handleMediaError}
               />
             ) : (
               <VjsVideo
@@ -269,7 +298,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 src={preset.src}
                 poster={preset.poster}
                 playsInline
-                crossOrigin="anonymous"
                 className="w-full h-full object-cover"
                 onTimeUpdate={handleTimeUpdate}
                 onLoadedMetadata={handleLoadedMetadata}
@@ -279,6 +307,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 onRateChange={handleRateChange}
                 onWaiting={handleWaiting}
                 onPlaying={handlePlaying}
+                onError={handleMediaError}
               />
             )}
           </div>
@@ -308,8 +337,29 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
         </div>
       </div>
 
+      {/* Media Error Recovery State Overlay */}
+      {mediaError && (
+        <div className="absolute inset-0 bg-black/80 backdrop-blur-md z-30 flex flex-col items-center justify-center p-6 text-center">
+          <AlertCircle className="w-10 h-10 text-rose-500 mb-2" />
+          <h3 className="text-sm font-bold font-display text-slate-100 tracking-wide">
+            MEDIA STREAM RECOVERY
+          </h3>
+          <p className="text-xs text-slate-400 max-w-md mt-1 mb-4 font-mono-numbers">
+            {mediaError}
+          </p>
+          <button
+            type="button"
+            onClick={handleRetry}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-black text-xs font-bold font-mono-numbers transition-colors"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            <span>RELOAD MEDIA STREAM</span>
+          </button>
+        </div>
+      )}
+
       {/* Center Interactive Overlay: Big Play/Pause & Buffering Feedback */}
-      {!showNativeControls && (
+      {!showNativeControls && !mediaError && (
         <div
           onClick={handleCenterClick}
           className="absolute inset-0 flex items-center justify-center cursor-pointer z-10"

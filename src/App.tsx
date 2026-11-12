@@ -12,6 +12,7 @@ import { MechanicalTransport } from './components/MechanicalTransport';
 import { JogWheel } from './components/JogWheel';
 import { AudioMeters } from './components/AudioMeters';
 import { AuxiliaryRack } from './components/AuxiliaryRack';
+import { DemoRecorderStudio } from './components/DemoRecorderStudio';
 import { AuditConsole } from './components/AuditConsole';
 import { DesignThinkingSection } from './components/DesignThinkingSection';
 import { Disc, Radio, Sliders, ExternalLink, Sparkles, ShieldCheck } from 'lucide-react';
@@ -235,11 +236,14 @@ export default function App() {
           <a href="#hardware-deck" className="hover:text-amber-400 transition-colors whitespace-nowrap shrink-0">
             02. Hardware Deck
           </a>
+          <a href="#demo-studio" className="hover:text-amber-400 transition-colors whitespace-nowrap shrink-0">
+            03. Screen Demo Video
+          </a>
           <a href="#audit-bench" className="hover:text-amber-400 transition-colors whitespace-nowrap shrink-0">
-            03. Audit Bench
+            04. Audit Bench
           </a>
           <a href="#design-thinking" className="hover:text-amber-400 transition-colors whitespace-nowrap shrink-0">
-            04. Design Thinking
+            05. Design Thinking
           </a>
         </nav>
 
@@ -358,7 +362,21 @@ export default function App() {
           </div>
         </section>
 
-        {/* Section 3: Footage Audit Suite & Mux Test Bench */}
+        {/* Section 3: Screen-Recording Demo Video & Live Automated Walkthrough Recorder */}
+        <section id="demo-studio">
+          <DemoRecorderStudio
+            playerState={playerState}
+            playerInstance={playerInstance}
+            onSelectPreset={setActivePreset}
+            onPlayPause={handlePlayPause}
+            onSeek={handleSeek}
+            onStepFrame={handleStepFrame}
+            onSetRate={handleSetRate}
+            onVolumeChange={handleVolumeChange}
+          />
+        </section>
+
+        {/* Section 4: Footage Audit Suite & Mux Test Bench */}
         <section id="audit-bench">
           <AuditConsole
             activePreset={activePreset}
@@ -369,7 +387,7 @@ export default function App() {
           />
         </section>
 
-        {/* Section 4: Official Contest Submission & Design Thinking */}
+        {/* Section 5: Official Contest Submission & Design Thinking */}
         <section id="design-thinking">
           <DesignThinkingSection />
         </section>

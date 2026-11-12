@@ -36,7 +36,7 @@ export const AuditConsole: React.FC<AuditConsoleProps> = ({
   };
 
   return (
-    <div className="w-full bg-[#0c0f16] rounded-2xl border border-[#202838] p-5 shadow-xl mt-6">
+    <div className="hidden w-full bg-[#0c0f16] rounded-2xl border border-[#202838] p-5 shadow-xl mt-6">
       
       {/* Console Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/5 pb-4 mb-5">
